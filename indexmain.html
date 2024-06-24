@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD SYSTEM</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: poppins;
+
+
+        }
+
+        body {
+            color: white;
+            background-color: #1d2630;
+
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            font-size: 1rem;
+            color: black;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .container {
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 40vh;
+
+        }
+
+        #name-product {
+            width: 100%;
+            height: 30px;
+            text-align: center;
+
+        }
+
+        .input2-content {
+            margin-top: 14px;
+        }
+
+        .input3-content {
+            margin-top: 14px;
+        }
+
+        #button1-searching {
+            margin-top: 14px;
+        }
+
+        button {
+            width: 100%;
+            height: 50px;
+            border-style: none;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: green;
+            transition: 0.3 ease;
+        }
+
+        table {
+
+            margin-top: 40px;
+            width: 100%;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="head1">
+                <h1>
+                    CRUDS
+                </h1>
+            </div>
+            <div class="content-header">
+                PRODUCT MANAGMENT SYSTEM
+            </div>
+
+        </div>
+        <div class="inputs">
+            <div class="input-content">
+                <div class="input1-content">
+                    <input type="text" placeholder="name of PRODUCT" id="name-product">
+                </div>
+                <div class="input2-content">
+                    <input type="text" placeholder="price" style="margin-left:14px;height: 40px; font-size: 1rem;"
+                        id="price">
+                    <input type="text" placeholder="taxes" style="margin-left:14px;height: 40px; font-size: 1rem;"
+                        id="taxes">
+                    <input type="text" placeholder="ads" style="margin-left:14px;height: 40px; font-size: 1rem;"
+                        id="ads">
+                    <input type="text" placeholder="discount" style="margin-left:14px;height: 40px; font-size: 1rem;"
+                        id="discount">
+                </div>
+                <div class="input3-content">
+                    <input type="text" placeholder="count" style="width: 100%;margin-top: 14px;height: 30px;"
+                        id="count">
+                </div>
+                <div class="input4">
+                    <input type="text" placeholder="category" style="width: 100%;margin-top: 14px;height: 30px;"
+                        id="category">
+                </div>
+                <div class="searching">
+                    <input type="text" placeholder="search" style="width: 100%;margin-top: 14px;height: 30px;"
+                        id="search-e">
+                    <div class="2-button">
+                        <button id="button1-searching" onclick="searching()">Search by Title</button>
+                        <button id="button1-searching">Search by category</button>
+                    </div>
+                    <div class="creating">
+                        <button id="create">create PRODUCT</button>
+                    </div>
+                    <div class="delete">
+                        <button id="button-delete" onclick="cleardata()">Delete All From localStorage</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="output">
+        <table>
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Title</td>
+                    <td>PRice</td>
+                    <td>taxes</td>
+                    <td>ADS</td>
+                    <td>discount</td>
+
+                    <td>category</td>
+                    <td>update</td>
+                    <td>Delete</td>
+
+                </tr>
+
+            </thead>
+            <tbody id="table"></tbody>
+        </table>
+
+    </div>
+</body>
+
+
+
+<script>
+    localStorage.clear();
+
+    let create = document.getElementById("create");
+    let dataproduct;
+    if (localStorage.product != null) {
+        dataproduct = JSON.parse(localStorage.product);
+    }
+    else {
+        dataproduct = [];
+    }
+    let i;
+    if (localStorage.item != null) {
+
+        i = JSON.parse(localStorage.item);
+    }
+    else {
+        i = 0;
+
+    }
+
+    create.onclick = function () {
+        let nameproduct = document.getElementById("name-product").value;
+        let price = document.getElementById("price").value;
+        let ads = document.getElementById("ads").value;
+        let discount = document.getElementById("discount").value;
+        let category = document.getElementById("category").value;
+        let data = {
+            name_product: nameproduct,
+            price: price,
+            ads: ads,
+            discount: discount,
+            category: category,
+        };
+        dataproduct[i] = data;
+        console.log(data);
+        i++
+        localStorage.setItem("product", JSON.stringify(dataproduct));
+        localStorage.setItem("item", JSON.stringify(i));
+        showdata()
+    };
+    function showdata() {
+
+
+        let table;
+
+        for (let v = 0; v < dataproduct.length; v++) {
+            table += `<tr>
+                <td>${v}</td>
+                <td>${dataproduct[v].name_product}</td>
+                <td>${dataproduct[v].price}</td>
+                <td>${dataproduct[v].ads}</td>
+                <td>${dataproduct[v].discount}</td>
+                <td>${dataproduct[v].category}</td>
+
+             
+                <td><button onclick="update(${v})" style="background-color: green;">update</button></td>
+                <td><button id="name" style="background-color: red;" onclick="deleting(${v})">Delete</button></td>
+                <tr>
+           `;
+        }
+        document.getElementById("table").innerHTML = table;
+    }
+    ;
+    function cleardata() {
+
+        localStorage.clear();
+        dataproduct.splice(0);
+        showdata()
+    }
+    //array and every array having an object 
+    function deleting(index) {
+        dataproduct.splice(index, 1);
+        localStorage.product = dataproduct;
+        showdata()
+    };
+    function update(index) {
+    };
+    function searching() {
+        let table = ``;
+        let value = document.getElementById("search-e").value;
+        let h = 0;
+        for (h; h < dataproduct.length; h++) {
+            if (dataproduct[h].name_product.includes(value)) {
+
+                table += `<tr>
+                <td>${h}</td>
+                <td>${dataproduct[h].name_product}</td>
+                <td>${dataproduct[h].price}</td>
+                <td>${dataproduct[h].ads}</td>
+                <td>${dataproduct[h].discount}</td>
+                <td>${dataproduct[h].category}</td>
+                <td><button onclick="update(${h})" style="background-color: green;">update</button></td>
+                <td><button id="name" style="background-color: red;" onclick="deleting(${h})">Delete</button></td>
+                <tr>
+           `;
+
+            }
+
+
+        };
+        document.getElementById("table").innerHTML = table;
+
+
+
+    };
+    function update(index) { };
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
